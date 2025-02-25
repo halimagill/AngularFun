@@ -26,7 +26,8 @@ export class CreateLoginComponent {
     this.registerForm = this.fb.group({
       firstName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      emailId: new FormControl('', [Validators.required, Validators.email]),
+      phoneNo: new FormControl('', [Validators.required, Validators.minLength(10)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}')]),
       passwordConfirm: new FormControl('', [Validators.required, passwordMatchValidator ])
     });    
@@ -38,8 +39,11 @@ export class CreateLoginComponent {
   get lastName() { 
     return this.registerForm.get('lastName');
   }
-  get emailId() { 
-    return this.registerForm.get('emailId');
+  get phoneNo() { 
+    return this.registerForm.get('phoneNo');
+  }
+  get email() { 
+    return this.registerForm.get('email');
   }
   get password() { 
     return this.registerForm.get('password');
@@ -58,12 +62,10 @@ export class CreateLoginComponent {
           const newLogin: CreateLogin = {
             userId : 0,
             firstName : val.firstName,
-            middleName : "N/A",
             lastName : val.lastName,
-            emailId : val.emailId,
+            email : val.email,
             password : val.password,
-            mobileNo : "N/A",
-            altMobileNo : "N/A"
+            phoneNo : val.phoneNo
         };
 
         this.authService.createUser(newLogin)

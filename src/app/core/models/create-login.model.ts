@@ -1,11 +1,9 @@
 export class CreateLogin {
   userId: number = 0;
   firstName: string = '';
-  middleName: string = '';
   lastName: string = '';
-  mobileNo: string = '';
-  emailId: string = '';
-  altMobileNo: string = '';
+  phoneNo: string = '';
+  email: string = '';
   password: string = '';
   
   constructor() {}
