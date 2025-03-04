@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError, catchError } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -82,8 +82,16 @@ export class DataService {
     
     }
 
-    private handleError(error: any): Observable<never> {
-        console.error('An error occurred', error);
-        return throwError(error.message || error);
+    private handleError(error: HttpErrorResponse): Observable<never> {
+        if (error.error instanceof ErrorEvent) {
+            // Client-side error
+            console.error('An error occurred:', error.error.message);
+          } else {
+            // Server-side error
+            console.error(`Backend returned code ${error.status}, body was:`, error.error);
+            // Access the error body here: error.error
+          }
+          return throwError(() => error); // Re-throw the error for further handling
     }
+    
 }

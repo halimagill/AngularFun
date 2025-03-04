@@ -16,6 +16,7 @@ import { passwordMatchValidator } from '../../core/validators/passwordMatch.vali
 export class CreateLoginComponent {
  registerForm : FormGroup;
  errorMessage:string = '';
+ errorList:string = '';
  hasError: boolean = false;
   
 
@@ -60,7 +61,7 @@ export class CreateLoginComponent {
 
     if(this.registerForm.valid) {
           const newLogin: CreateLogin = {
-            userId : 0,
+            userName : val.email,
             firstName : val.firstName,
             lastName : val.lastName,
             email : val.email,
@@ -69,20 +70,31 @@ export class CreateLoginComponent {
         };
 
         this.authService.createUser(newLogin)
-        .subscribe((response:any) => {
-          debugger;
-          console.log(response);
-
-          if(response.success) {
+        .subscribe({
+          next: (data) => {
+            // Handle successful data retrieval
             console.log("User is created");
             this.router.navigateByUrl('/login');
-          }
-          else
-          {
+
+          },
+          error: (error) => {
+            debugger;
+            // Handle the rethrown error
+            console.error('Error caught in component:', error);
             this.hasError = true;
-            this.errorMessage = response.message;
+
+            if(error.error.errors) {
+              error.error.errors.forEach((error: { description: string; }) => {
+                this.errorList += error.description + '\n';
+              });
+            }
+            else {
+              this.errorList = error.error[0].description;
+            }
+            this.errorMessage = this.errorList;
             console.log("User is not created");
-          }
+
+          },
         });        
     }
   }

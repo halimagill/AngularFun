@@ -1,5 +1,5 @@
 export class CreateLogin {
-  userId: number = 0;
+  userName: string = '';
   firstName: string = '';
   lastName: string = '';
   phoneNo: string = '';

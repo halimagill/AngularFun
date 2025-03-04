@@ -3,15 +3,17 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { DataService } from './data.services';
 import { CreateLogin } from '../models/create-login.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AuthenticationService extends DataService {
-  private baseUrl: string = 'https://freeapi.miniprojectideas.com/api/User';
+  private baseUrl: string;
   private jwtHelper;
   
   constructor(http: HttpClient, jwtHelper: JwtHelperService) {     
-    super('https://freeapi.miniprojectideas.com/api/User', http);
+    super(environment.apiUrl, http);
     this.jwtHelper = jwtHelper;
+    this.baseUrl = environment.apiUrl;
     //TODO Move this to a storage service
    // const token = localStorage?.getItem('token');
     //TODO: Check if the token is valid and not expired    
@@ -19,7 +21,7 @@ export class AuthenticationService extends DataService {
   }
   
   createUser(user: CreateLogin) {
-    return this.urlCreate('CreateNewUser', user);
+    return this.urlCreate('UserManager/CreateUser', user);
   }
 
   // getUserByEmail(email: string) {
