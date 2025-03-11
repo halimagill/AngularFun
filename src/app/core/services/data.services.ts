@@ -73,8 +73,8 @@ export class DataService {
              );
     }
 
-    urlCreate(urlExt:string, resource: any) {
-        return this.http.post(`${this.url}/${urlExt}`, resource)
+    urlCreate(urlExt:string, resource: any, httpOptions?: any) {
+        return this.http.post(`${this.url}/${urlExt}`, resource, httpOptions)
         .pipe(map(response => response)
             , shareReplay(1) 
             , catchError(this.handleError)

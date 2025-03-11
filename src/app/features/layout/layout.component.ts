@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 @Component({
   selector: 'standardlayout',
   imports: [RouterOutlet],
+  providers: [AuthenticationService],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.less'
 })

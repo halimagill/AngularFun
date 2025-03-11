@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { DataService } from './data.services';
@@ -43,8 +43,14 @@ export class AuthenticationService extends DataService {
     return !isExpired;;
   }
 
-  login(email: string, password: string) {    
-    return this.urlCreate('login', { "EmailId" : email, "Password": password })
+  login(email: string, password: string) {
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'text/plain' // Set Content-Type to text/plain
+    //   }),
+    //   responseType: 'text' // Expect plain text response
+    // };    
+    return this.urlCreate('UserManager/Login', { "Email" : email, "Password": password })
   }
   
   logout() {

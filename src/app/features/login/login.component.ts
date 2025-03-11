@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, FormControl, Validators } 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { debug } from 'console';
 
 @Component({ 
   selector: 'mainlogin',
@@ -47,29 +48,34 @@ export class LoginComponent {
     console.log(this.loginForm.value);
 
     this.authService.login(val.email, val.password)
-    .subscribe((response : any) => {
-      debugger;
-      console.log(response); 
+    .subscribe({
+      next: (token: any) => {
+        debugger;       
+        console.log(token); 
             
-      if (this.isUserLogin(response.data)) {
-        // const loginInfo: LoginInfo = response.data as LoginInfo;
-        // this.userInfo = loginInfo;
-        this._isUserLoggedIn$.next(true);
-        localStorage.setItem('token', response.data.token);                    
+        if (this.isUserLogin(token)) {
+          // const loginInfo: LoginInfo = response.data as LoginInfo;
+          // this.userInfo = loginInfo;
+          this._isUserLoggedIn$.next(true);
+          localStorage.setItem('token', token);                    
 
-        this.router.navigateByUrl('/dashboard');
-        console.log("User is logged in");     
-        // Use the user object here
-      } else {
+          this.router.navigateByUrl('/dashboard');
+          console.log("User is logged in");     
+          // Use the user object here
+        }
+      },
+      error: (error) => {
+        debugger;
+        // Handle the rethrown error
+        console.error('Error caught in component:', error);
         this.isInvalidLogin = true;
-        // Handle the case where the response is not a valid User object
-        throw new Error('Invalid login: ' + JSON.stringify(response));
-      }
+      },
     });   
   }
 
   // Handle the response here
   isUserLogin(response: any): boolean {
+    debugger;
     return response && typeof response === 'object' 
     && 'token' in response;
   };
