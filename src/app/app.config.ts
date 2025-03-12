@@ -6,7 +6,8 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { AppErrorHandlerService } from './core/app-error-handler';
 import { customInterceptor } from './core/interceptors/custom.interceptor';
 import { JwtModule } from '@auth0/angular-jwt';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
-  providers: [importProvidersFrom(JwtModule.forRoot({})),provideHttpClient(withFetch(), withInterceptors([customInterceptor])), { provide: ErrorHandler, useClass:AppErrorHandlerService } ,provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay())]
+  providers: [importProvidersFrom(JwtModule.forRoot({})),provideAnimations(),provideHttpClient(withFetch(), withInterceptors([customInterceptor])), { provide: ErrorHandler, useClass:AppErrorHandlerService } ,provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideClientHydration(withEventReplay())]
 };
