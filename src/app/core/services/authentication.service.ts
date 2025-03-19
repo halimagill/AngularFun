@@ -4,33 +4,45 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { DataService } from './data.services';
 import { CreateLogin } from '../models/create-login.model';
 import { environment } from '../../../environments/environment';
+import { StorageService } from './storage.service';
+import { BehaviorSubject } from 'rxjs';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class AuthenticationService extends DataService {
-  private baseUrl: string;
-  private jwtHelper;
+  private _baseUrl: string;
+  private _isUserLoggedIn$ = new BehaviorSubject<boolean>(false); //TODO: Check proper implementation
+  public isLoggedIn$ = this._isUserLoggedIn$.asObservable();
   
-  constructor(http: HttpClient, jwtHelper: JwtHelperService) {     
+  constructor(http: HttpClient, private jwtHelper: JwtHelperService, private storage: StorageService) {     
     super(environment.apiUrl, http);
-    this.jwtHelper = jwtHelper;
-    this.baseUrl = environment.apiUrl;
-    //TODO Move this to a storage service
-   // const token = localStorage?.getItem('token');
-    //TODO: Check if the token is valid and not expired    
-   // this._isUserLoggedIn$.next(!!token);
+    this._baseUrl = environment.apiUrl;
   }
   
+  get CurrentUser() {
+    let token = this.storage.getItem('token') as string;
+    if (!token) {
+      return null;
+    } 
+    let expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+    let isExpired = this.jwtHelper.isTokenExpired(token);
+
+    if (isExpired) {
+      return null;
+    }
+
+    let user = User.mapUserToken(this.jwtHelper.decodeToken(token));
+    //TO DO ADD USER INFO TO USER OBJ
+    return user;
+  }
+
   createUser(user: CreateLogin) {
     return this.urlCreate('UserManager/CreateUser', user);
   }
 
-  // getUserByEmail(email: string) {
-
-  // }
-
   isLoggedIn(): boolean {
     
-    let token = localStorage.getItem('token');
+    let token = this.storage.getItem('token') as string;
 
     if (!token) {
       return false;
@@ -39,8 +51,9 @@ export class AuthenticationService extends DataService {
     let expirationDate = this.jwtHelper.getTokenExpirationDate(token);
     let isExpired = this.jwtHelper.isTokenExpired(token);
     //return this._isUserLoggedIn$.value;  
+    this._isUserLoggedIn$.next(!isExpired);
 
-    return !isExpired;;
+    return !isExpired;
   }
 
   login(email: string, password: string) {
@@ -54,8 +67,8 @@ export class AuthenticationService extends DataService {
   }
   
   logout() {
-    //this._isUserLoggedIn$.next(false);
-    localStorage.removeItem('token');    
-  }
-   
+    debugger;
+    this._isUserLoggedIn$.next(false);
+    this.storage.removeItem('token');    
+  }    
 }

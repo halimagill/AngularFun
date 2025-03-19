@@ -21,10 +21,11 @@
       <div id="sidebarMenu">
             <div class="main-content-wrapper">               
                 <a href="#contact">Contact</a>
-                <a href="#about">About</a>
-                <a ng-click="$event.preventDefault(); logout()" href="#logout">Logout</a>
+                <a href="#admin" routerLink="/admin">Admin</a>
+                <a ng-click="logout()" href="#logout">Logout</a>
             </div>
         </div>
     </div>         
   </div>
 </nav>
+<!-- <p>Welcome {{ this._authService.CurrentUser.Name  }}</p> -->

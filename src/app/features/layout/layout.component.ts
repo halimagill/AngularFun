@@ -10,13 +10,16 @@ import { AuthenticationService } from '../../core/services/authentication.servic
   styleUrl: './layout.component.less'
 })
 export class LayoutComponent {
-  protected authService: AuthenticationService;
+  _authService: AuthenticationService;
   constructor(authService: AuthenticationService, private router: Router) {
-    this.authService = authService;
+    this._authService = authService;
   }
 
   logout() {
-    this.authService.logout();
+    debugger;
+    console.log('Logging out');
+    this._authService.logout();
     this.router.navigateByUrl('/login');
+    console.log('Logged out');
   }
 }

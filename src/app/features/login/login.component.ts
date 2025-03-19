@@ -5,6 +5,7 @@ import { AuthenticationService } from '../../core/services/authentication.servic
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { debug } from 'console';
+import { StorageService } from '../../core/services/storage.service';
 
 @Component({ 
   selector: 'mainlogin',
@@ -21,6 +22,7 @@ export class LoginComponent {
 
   constructor(private fb: FormBuilder,
               private authService: AuthenticationService,
+              private storage: StorageService,
               private router: Router) {
 
                 this.loginForm = this.fb.group({
@@ -57,11 +59,10 @@ export class LoginComponent {
           // const loginInfo: LoginInfo = response.data as LoginInfo;
           // this.userInfo = loginInfo;
           this._isUserLoggedIn$.next(true);
-          localStorage.setItem('token', token);                    
+          this.storage.setItem('token', token.token);                    
 
           this.router.navigateByUrl('/dashboard');
-          console.log("User is logged in");     
-          // Use the user object here
+          console.log("User is logged in");
         }
       },
       error: (error) => {
