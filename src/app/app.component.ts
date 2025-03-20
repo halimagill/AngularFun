@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 export class AppComponent {
   title = 'LoginExample';
   constructor() {
-    console.log(environment.production); // Logs false for development environment
+    console.log(`Is production environment?: ${ environment.production }`); // Logs false for development environment
   }
  // constructor(public authService: AuthenticationService) {}
 }

@@ -30,7 +30,7 @@ export const appConfig: ApplicationConfig = {
         if (isPlatformBrowser(platformId)) {
           return {};
         }
-        return localStorage;
+        return StorageService;
       },
       deps: ['PLATFORM_ID'] 
     },

@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     debugger;
     if (this.authService.isLoggedIn()) {
       // Redirect to login page or show an error message
-      console.log('User is not logged in');
+      console.log('User is logged in');
       return true;
     }
 
@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     }
 
     //return createUrlTreeFromSnapshot(route, ['/', 'login']);
-
+    console.log('User is not logged in');
     this.router.navigate(['/login']);
     return false;   
   }
