@@ -59,7 +59,7 @@ export class LoginComponent {
           // const loginInfo: LoginInfo = response.data as LoginInfo;
           // this.userInfo = loginInfo;
           this._isUserLoggedIn$.next(true);
-          this.storage.setItem('token', token.token);                    
+          this.storage.set('token', token.token);                    
 
           this.router.navigateByUrl('/dashboard');
           console.log("User is logged in");

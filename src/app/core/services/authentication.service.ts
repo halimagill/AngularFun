@@ -20,7 +20,7 @@ export class AuthenticationService extends DataService {
   }
   
   get CurrentUser() {
-    let token = this.storage.getItem('token') as string;
+    let token = this.storage.get('token') as string;
     if (!token) {
       return null;
     } 
@@ -42,7 +42,7 @@ export class AuthenticationService extends DataService {
 
   isLoggedIn(): boolean {
     
-    let token = this.storage.getItem('token') as string;
+    let token = this.storage.get('token') as string;
 
     if (!token) {
       return false;
@@ -69,6 +69,6 @@ export class AuthenticationService extends DataService {
   logout() {
     debugger;
     this._isUserLoggedIn$.next(false);
-    this.storage.removeItem('token');    
+    this.storage.remove('token');    
   }    
 }
